@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <input type="text" id="text1">
+  <input type="text" id="text2">
+  <input type="button" id="button1" value="버튼1">
+</body>
+<script>
+  document.getElementById('button1').addEventListener('click', function(){
+    var a = Number(document.getElementById("text1").value);
+    var b = Number(document.getElementById("text2").value);
+    if (a + b >= 10) {
+      alert("10 이상");
+    } else if (a + b < 10) {
+      alert("10 미만");
+    } else {
+      alert("숫자?");
+    }
+  });
+</script>
+
+</html>

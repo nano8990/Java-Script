@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <input type="text" id="inputText1" value="하">
+  <br>
+  <input type="text" id="inputText2">
+  <br>
+  <br>
+  <input type="text" id="inputText3">
+  <br>
+  <input type="text" id="inputText4">
+  <br>
+
+  <input type="button" id="button1" value="버튼1">
+  <input type="button" id="button2" value="버튼2">
+  <input type="button" id="button3" value="버튼3">
+  <input type="button" id="button4" value="버튼4">
+  남자
+  <input type="radio" name="1" id="i1">
+  여자
+  <input type="radio" name="1" id="i2">
+  <br>
+  <input type="button" id="button!1" value="버튼!" style="WIDTH: 300pt; HEIGHT: 100pt; font-style: italic; font-size: 30pt; color: red">
+  <br>
+  <input type="button" id="button!2" value="더하기" style="WIDTH: 300pt; HEIGHT: 300pt; font-style: italic; font-size: 70pt; color: red">
+</body>
+<script>
+  var a = "킹갓"
+  var b = "제너럴"
+  var e = "엠페러"
+  var f = "충무공"
+  var c = "남자"
+  var d = "여자"
+
+  document.getElementById("button1").addEventListener('click', function() {
+    document.getElementById("inputText1").value = a;
+  });
+  document.getElementById("button2").addEventListener('click', function() {
+    document.getElementById("inputText1").value = b;
+  });
+  document.getElementById("button3").addEventListener('click', function() {
+    document.getElementById("inputText1").value = e;
+  });
+  document.getElementById("button4").addEventListener('click', function() {
+    document.getElementById("inputText1").value = f;
+  });
+  document.getElementById("i1").addEventListener('click', function() {
+    document.getElementById("inputText2").value = c;
+  });
+  document.getElementById("i2").addEventListener('click', function() {
+    document.getElementById("inputText2").value = d;
+  });
+  document.getElementById("button!1").addEventListener('click', function() {
+    alert(document.getElementById("inputText1").value +
+      document.getElementById("inputText2").value)
+  });
+  
+  document.getElementById("button!2").addEventListener('click', function() {
+    var sum1 = Number(document.getElementById("inputText3").value)
+    var sum2 = Number(document.getElementById("inputText4").value)
+    if (sum1 + sum2 < 10) {
+      alert("입력값이 " + (sum1 + sum2) + "이므로 10미만")
+    } else if (sum1 + sum2 > 10) {
+      alert("입력값이 " + (sum1 + sum2) + "이므로 10이상")
+    } else {
+      alert("숫자 맞음?")
+    }
+
+  });
+</script>
+
+</html>
