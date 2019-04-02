@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<span id="numberArea1"></span>
+<span id="numberArea2"></span>
+<style>
+  #numberArea1{
+    font-size: 60px;
+    color: hotpink;
+    font-style: italic;
+    text-align: center;
+  }
+  #numberArea2{
+    font-size: 50px;
+    color: pink;
+    font-style: oblique;
+    text-align: justify;
+  }
+  </style>
+  <body>
+  </body>
+  <script>
+    // for (var i = 1; i < 10 + 1; i++) {
+    //   console.log(i)
+    // }
+    //
+    // for (var i = 0; i < 10; i++) {
+    //   console.log(i + 1)
+    // }
+    //
+    // for (var i = 0; i < 20; i = i + 2) {
+    //   console.log(i / 2 + 1)
+    // }
+    //
+    // for (var i = 0; i > -10; i--) {
+    //   console.log(Math.abs(i - 1))
+    // }
+    //
+    // var n = 0
+    // for (var i = 0; i < 1; i++) {
+    //   if (n < 10) {
+    //     console.log(n + 1)
+    //     i--
+    //   }
+    //   n++
+    // }
+    //
+    // for (var i = 12; i <= 120; i = i + 12) {
+    //   console.log(i % 11)
+    // }
+    document.getElementById("numberArea1").innerHTML = '<input type="button" id="button1" value="버튼1" style="WIDTH: 200pt; HEIGHT: 200pt"><br>';
+    document.getElementById("button1").addEventListener('click', function() {
+      var numberText1 = ""
+      for (var i = 1; i <= 10; i++) {
+        for (var j = 1; j <= 10; j++) {
+          numberText1 += j + (10 * (i - 1)) + " ";
+        }
+        numberText1 += "<br>";
+        // 자바 스크립트로 해서 inerHTML하는 것은 문자 그대로 HTML로 보내서 해석하기 때문에
+        // 태그를 "<br>" 처럼 보내면 띄어쓰기가 먹는다
+      }
+      console.log(numberText1);
+      document.getElementById("numberArea1").innerHTML = numberText1;
+    });
+    document.getElementById("numberArea2").innerHTML = '<input type="button" id="button2" value="버튼2" style="WIDTH: 200pt; HEIGHT: 200pt">';
+    document.getElementById("button2").addEventListener('click', function() {
+      var numberText2 = "";
+      for (var i = 1; i <= 100; i++) {
+        numberText2 += i + " ";
+        if (i % 10 == 0) {
+          numberText2 += "<br>";
+        }
+      }
+      console.log(numberText2);
+      document.getElementById("numberArea2").innerHTML = numberText2;
+    });
+  </script>
+
+</html>

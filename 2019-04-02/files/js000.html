@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<span id="numberArea1"></span>
+<br>
+<span id="numberArea2"></span>
+<style>
+</style>
+
+<body>
+</body>
+<script>
+  document.getElementById("numberArea1").innerHTML = '<input type="button" id="button1" value="로그인 양식 출력">';
+  document.getElementById("button1").addEventListener('click', function() {
+    document.getElementById("numberArea1").innerHTML = '<input type="button" id="button1" value="로그인 양식 닫기">'
+    document.getElementById("numberArea2").innerHTML =
+      'ID : <input type="text" id="inputId" placeholder="아이디 입력"><br>Password : <input type="password" id="inputPw" placeholder="비밀번호 입력"><br><input type="button" id="loginClick" value="로그인">'
+  });
+</script>
+
+</html>

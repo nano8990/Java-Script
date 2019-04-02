@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<style media="screen">
+  .red {
+    color=red;
+  }
+</style>
+
+<body>
+  ID : <input type="text" id="textId" placeholder="아이디">
+  <br><br>
+  Password : <input type="password" id="textPw" placeholder="비밀번호">
+  <br><br>
+  <input type="button" id="button" value="로그인">
+</body>
+<script>
+  document.getElementById('button').addEventListener('click', function() {
+    var idConfirm = document.getElementById("textId").value;
+    var pwConfirm = document.getElementById("textPw").value;
+    if (idConfirm === 'polytech' && pwConfirm === '1q2w3e4r') {
+      alert("로그인 성공");
+      console.log("로그인 성공")
+    } else {
+      if (idConfirm != 'polytech' && pwConfirm != '1q2w3e4r') {
+        alert("아이디/비밀번호 오류");
+        console.log("로그인 실패")
+      } else {
+        if (idConfirm != 'polytech') {
+          alert("아이디 오류");
+          console.log("로그인 실패")
+        } else {
+          alert("비밀번호 오류");
+          console.log("로그인 실패")
+        }
+      }
+    }
+  });
+</script>
+
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<span id="numberArea1"></span>
+<br>
+<span id="numberArea2"></span>
+<style>
+</style>
+
+<body>
+</body>
+<script>
+  document.getElementById("numberArea1").innerHTML = '<input type="text" id="text1" placeholder="숫자를 입력하세요."><br><input type="button" id="button1" value="구구단">';
+  document.getElementById("button1").addEventListener('click', function() {
+    var inputNumber = document.getElementById("text1").value
+    if (inputNumber == ""){
+      inputNumber = 0
+    }
+    var outputNumber = ""
+    for (var i = 1; i < 1000; i++) {
+      outputNumber += inputNumber + " * " + i + " = " + (inputNumber * i) + "<br>"
+    }
+    document.getElementById("numberArea2").innerHTML = outputNumber;
+  });
+</script>
+
+</html>
