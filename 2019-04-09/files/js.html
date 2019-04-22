@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <span id="numberArea"></span>
+</body>
+<script type="text/javascript">
+  var arr1 = [];
+  var arr2 = [];
+  for (var i = 0; i < 11; i++) {
+    if (i < 10) {
+      arr1[i] = i + 1;
+    }
+    arr2[i] = i * 2;
+  }
+  var arr3 = [];
+  var abc = "abc"
+  for (var i = 0; i < 7; i++) {
+    arr3[i] = abc + (i + 1)
+  }
+  // arr3[0] = "abc" + (0 + 1)
+  // arr3[1] = "abc" + (1 + 1)
+  // arr3[2] = "abc" + (2 + 1)
+  // arr3[3] = "abc" + (3 + 1)
+  // arr3[4] = "abc" + (4 + 1)
+  // arr3[5] = "abc" + (5 + 1)
+  // arr3[6] = "abc" + (6 + 1)
+  var arr4 = [];
+  for (var i = 0; i < 9; i++) {
+    arr4[i] = i * 3 + 1
+  }
+  // arr4[0] = 0 * 3 + 1
+  // arr4[1] = 1 * 3 + 1
+  // arr4[2] = 2 * 3 + 1
+  // arr4[3] = 3 * 3 + 1
+  // arr4[4] = 4 * 3 + 1
+  // arr4[5] = 5 * 3 + 1
+  // arr4[6] = 6 * 3 + 1
+  // arr4[7] = 7 * 3 + 1
+  // arr4[8] = 8 * 3 + 1
+  console.log(arr1, arr2, arr3, arr4);
+
+  var arr5 = [];
+  for (var i = 0; i < 12; i++) {
+    arr5[i] = i % 2;
+  }
+  var arr6 = [];
+  for (var i = 0; i < 12; i++) {
+    arr6[i] = i % 4;
+  }
+
+  var arr7 = [];
+  var text = ""
+  for (var i = 0; i < 5; i++) {
+    text += "text";
+    arr7[i] = text;
+  }
+
+  var arr8 = [];
+  var n = 1;
+  for (var i = 0; i < 8; i++) {
+    arr8[i] = n;
+    n *= 10;
+  }
+  console.log(arr5, arr6, arr7, arr8)
+
+  var arr1 = [];
+  for (var i = 0; i < 5; i++) {
+    arr1[i] = i * i;
+  }
+
+  var arr2 = [];
+  for (var i = 0; i < 5; i++) {
+    if (i % 2 == 0) {
+      arr2[i] = "J";
+    } else {
+      arr2[i] = "H";
+    }
+  }
+
+  var arr3 = [];
+  arr3[0] = 0;
+  for (var i = 2; i < 10; i += 2) {
+    arr3[i / 2] = arr3[i / 2 - 1] + 10;
+  }
+  console.log(arr1, arr2, arr3);
+
+  var arr4 = [];
+  for (var i = 4; i < 16; i += 4) {
+    for (var j = 0; j < 4; j++) {
+      arr4[i - 4 + j] = i - j;
+    }
+  }
+  console.log(arr4);
+
+  arr = [];
+  n = 1;
+  for (var i = 0; i < 300; i++) {
+    arr[i] = n
+    if (n % 10 == 3 || n % 10 == 6 || n % 10 == 9) {
+      arr[i + 1] = "짝"
+      i++;
+    } else if (n - 30 >= 0 && n - 30 < 10 || n - 60 >= 0 && n - 60 < 10 || n - 90 >= 0 && n - 90 < 10) {
+      arr[i + 1] = "짝"
+      i++;
+    }
+    n++;
+  }
+  console.log(arr)
+
+  var tempData = 0
+  var tempData2 = 0
+  var a = 0
+  var n = 0
+  var arr = []
+  var arr2 = []
+  for (var i = 0; i < 100000; i++) {
+    tempData = 0;
+    a = 0;
+    arr = [];
+    arr2[n] = i;
+    n = n + 1;
+    while (i / (10 ** tempData) >= 10) {
+      tempData = tempData + 1;
+    }
+    tempData2 = tempData
+    for (var j = 0; j < tempData + 1; j++) {
+      arr[j] = Math.floor((i / (10 ** tempData2)) % 10)
+      tempData2 = tempData2 - 1;
+    }
+    console.log(arr)
+    for (var j = 0; j < arr.length; j++) {
+      if (arr[j] == 3 || arr[j] == 6 || arr[j] == 9) {
+        a++;
+      }
+    }
+    if (a > 0) {
+      arr2[n] = "짝<br>";
+      n = n + 1;
+    }
+  }
+  document.getElementById("numberArea").innerHTML = arr2
+
+
+</script>
+
+</html>

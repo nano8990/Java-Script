@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <span id="numberArea"></span>
+</body>
+<script type="text/javascript">
+  var arr = [];
+  arr[0] = [];
+  arr[0][0] = 10;
+  arr[0][1] = "abc"
+  arr[1] = [];
+  arr[1][0] = 100;
+  console.log(arr);
+
+  var arr0 = [];
+  for (var i = 0; i < 5; i++) {
+    arr0[i] = [];
+    for (var j = 0; j < 5; j++) {
+      arr0[i][j] = 0
+    }
+  }
+  console.log(arr0);
+
+  var arr1 = [];
+  for (var i = 0; i < 5; i++) {
+    arr1[i] = [];
+    for (var j = 0; j < 5; j++) {
+      arr1[i][j] = (i * 5) + (j + 1);
+    }
+  }
+  console.log(arr1);
+
+  var arr2 = [];
+  for (var i = 0; i < 5; i++) {
+    arr2[i] = [];
+    for (var j = 0; j < 5; j++) {
+      arr2[i][j] = 3 * ((i * 5) + j) + 1;
+    }
+  }
+  console.log(arr2);
+
+  var arr3 = [];
+  for (var i = 0; i < 5; i++) {
+    arr3[i] = [];
+    for (var j = 0; j < 5; j++) {
+      arr3[i][j] = i * j;
+    }
+  }
+  console.log(arr3);
+
+  var arr4 = [];
+  for (var i = 0; i < 5; i++) {
+    arr4[i] = [];
+    for (var j = 0; j < 5; j++) {
+      arr4[i][j] = i + "" + j;
+    }
+  }
+  console.log(arr4);
+
+  var arr1 = [];
+  var a = 0;
+  var b = 0;
+  var row = 0
+  for (var i = 0; i < 25; i++) {
+    b = i % 5;
+    if (b == 0) {
+      arr1[a] = [];
+    }
+    arr1[a][b] = (5 * a) + (b + 1);
+    if (b == 4) {
+      a++;
+    }
+  }
+  console.log(arr1);
+
+  var arr1 = []
+  var num = 0
+  for (var i = 0; i < 5; i++) {
+    arr1[i] = [];
+    for (var j = 0; j < 5; j++) {
+      arr1[i][j] = num;
+      num += i * 2 + j * 3;
+    }
+  }
+  console.log(arr1);
+
+  var arr2 = [];
+  for (var i = 1; i < 10; i = i + 3) {
+    arr2[(i + 2) / 3 - 1] = [];
+    for (var j = 0; j < 5; j++) {
+      arr2[(i + 2) / 3 - 1][j] = i * j;
+    }
+  }
+  console.log(arr2);
+</script>
+
+</html>

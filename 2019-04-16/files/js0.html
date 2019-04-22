@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <input type="radio" name="radioBtn">
+  <input type="radio" name="radioBtn">
+  <input type="radio" name="radioBtn">
+  <input type="radio" name="radioBtn">
+  <input type="button" id="btn" value="몇 번째">
+  <span id="numberArea"></span>
+</body>
+<script type="text/javascript">
+  var cars = [];
+  var car1 = {};
+  var car2 = {};
+  car1.color = "red";
+  car1.weight = "500kg";
+  car1.kind = "소나타";
+  car1.accidentHistory = [];
+  car1.accidentHistory[0] = '2011-03-01';
+  car1.accidentHistory[1] = '2013-04-16';
+  car2.name = "abc";
+  car2.abc = 123;
+
+  cars[0] = car1, cars[1] = car2;
+  cars[2] = {
+    name: "abc",
+    age: 123
+  };
+  console.log(cars);
+
+  console.log(document.getElementsByName('radioBtn'));
+
+  document.getElementById('btn').addEventListener('click', function(){
+    var radios = document.getElementsByName('radioBtn')
+    for (var i = 0; i < radios.length; i++) {
+      if (radios[i].checked == true) {
+        alert(i + 1);
+      }
+    }
+  });
+</script>
+
+</html>
