@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <input type="text" id="inputText" placeholder="가격을 입력하세요.">
+  <input type="button" id="inputTextButton" value="구매">
+  <br>
+  <span id="outputText"></span>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+  $("#inputTextButton").click(function() {
+    var inputText = Number($("#inputText").val());
+    $.ajax({
+      url: `http://localhost/review`,
+      data: {
+        input : inputText
+      },
+      success: function(response) {
+        $("#outputText").html(response)
+      }
+    });
+  });
+</script>
+
+</html>

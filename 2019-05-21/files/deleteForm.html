@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+  <meta charset='utf-8'>
+  <title></title>
+</head>
+<style media='screen'>
+</style>
+
+<body>
+  <br><br><br>
+  <input type='button' id='deleteButtenClicked' value='삭제'>
+  <input type='button' id='allClickButton' value='전체선택'>
+  <input type='button' id='allUnclickButton' value='전체해제'>
+  <input type='button' id='goToHome' value='조회화면으로'>
+  <br><br>
+  <span id='result'></span>
+</body>
+<script src='http://code.jquery.com/jquery-latest.min.js'></script>
+<script>
+  var result;
+  $('#deleteButtenClicked').click(function() {
+    if (result != undefined) {
+      var selectBox = $(`input[name*='selectBox']`);
+      var selectList = [];
+      for (var i = 0; i < selectBox.length; i++) {
+        if (selectBox[i].checked) {
+          selectList.push(result[i].no)
+        }
+      }
+      if (selectList.length == 0) {
+        alert('삭제할 데이터를 선택해주세요.');
+        return
+      }
+      $.ajax({
+        url: `/delete`,
+        type: 'POST',
+        data: {
+          no: selectList
+        },
+        success: function(response) {
+          location.href = '/form/select'
+        }
+      });
+    }
+  });
+  $('#goToHome').click(function() {
+    location.href = '/form/select'
+  });
+  $('#allClickButton').click(function() {
+    var selectBox = $(`input[name*='selectBox']`);
+    for (var i = 0; i < selectBox.length; i++) {
+      if (selectBox[i].checked == false) {
+        $(`input[name*='selectBox']`)[i].checked = true;
+      }
+    }
+  });
+  $('#allUnclickButton').click(function() {
+    var selectBox = $(`input[name*='selectBox']`);
+    for (var i = 0; i < selectBox.length; i++) {
+      if (selectBox[i].checked == true) {
+        $(`input[name*='selectBox']`)[i].checked = false;
+      }
+    }
+  });
+  var selectNumber = '';
+  var selectWriter = '';
+  var selectTitle = '';
+  var selectText = '';
+  $.ajax({
+    url: `http://localhost/select`,
+    type: 'POST',
+    data: {
+      no: selectNumber,
+      writer: selectWriter,
+      title: selectTitle,
+      text: selectText
+    },
+    success: function(response) {
+      result = response;
+      var resultString = `
+        <table width='800px' height='40px' border=1>
+        <tr>
+        <td width='80'>선택상자</td>
+        <td width='80'>번호</td>
+        <td width='150'>작성자</td>
+        <td width='150'>제목</td>
+        <td>내용</td>
+        </tr>`;
+      for (var i = 0; i < response.length; i++) {
+        var eachNo = response[i].no;
+        var eachWriter = response[i].writer;
+        var eachTitle = response[i].title;
+        var eachText = response[i].text;
+        resultString += `<tr>`;
+        resultString += `<td>`;
+        resultString += `<input type='checkbox' name='selectBox' value=''>`
+        resultString += `</td>`;
+        resultString += `<td>`;
+        resultString += eachNo;
+        resultString += `</td>`;
+        resultString += `<td>`;
+        resultString += eachWriter;
+        resultString += `</td>`;
+        resultString += `<td>`;
+        resultString += eachTitle;
+        resultString += `</td>`;
+        resultString += `<td>`;
+        resultString += eachText;
+        resultString += `</td>`;
+        resultString += `</tr>`;
+        $('#result').html(resultString);
+      }
+    }
+  });
+</script>
+
+</html>

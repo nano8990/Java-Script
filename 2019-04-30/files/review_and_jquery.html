@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  이름 : <input type="text" id="inputName"><br>
+  html : <input type="text" id="inputHtmlScore"><br>
+  javascript : <input type="text" id="inputJavascriptScore"><br>
+  css : <input type="text" id="inputCssScore"><br>
+  nodejs : <input type="text" id="inputNodejsScore"><br>
+  mysql : <input type="text" id="inputMysqlScore"><br>
+  <input type="button" value="성적입력" id="inputScoreButton">
+  <input type="button" value="초기화" id="clearButton">
+  <br>
+  <span id="gradeInfo1"></span>
+  <br>
+  <span id="gradeInfo2"></span>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+  var count = 0;
+
+  var maxScoreName;
+  var maxScoreAverage;
+
+  var scoreSum1 = 0;
+  var scoreSum2 = 0;
+  var scoreSum3 = 0;
+  var scoreSum4 = 0;
+  var scoreSum5 = 0;
+  var averageScoreSum = 0;
+
+  $("#inputScoreButton").click(function() {
+    alert("JOONEY 안녕~");
+    var name = $("#inputName").val();
+    var score1 = Number($("#inputHtmlScore").val());
+    var score2 = Number($("#inputJavascriptScore").val());
+    var score3 = Number($("#inputCssScore").val());
+    var score4 = Number($("#inputNodejsScore").val());
+    var score5 = Number($("#inputMysqlScore").val());
+    var totalScore = score1 + score2 + score3 + score4 + score5;
+    var averageScore = totalScore / 5;
+    count++;
+
+    if (count == 1) {
+      maxScoreName = name;
+      maxScoreAverage = averageScore;
+    } else {
+      if (averageScore > maxScoreAverage) {
+        maxScoreName = name;
+        maxScoreAverage = averageScore;
+      }
+    }
+
+    var appendText1 = `
+    이름 : ${name} /
+    html : ${score1} /
+    javascript : ${score2} /
+    css : ${score3} /
+    nodejs : ${score4} /
+    mysql : ${score5} /
+    ${name}평균 : ${averageScore}
+    <br>`;
+
+    $("#gradeInfo1").append(appendText1);
+
+    scoreSum1 += score1
+    var scoreSumAverage1 = scoreSum1 / count
+    scoreSum2 += score2
+    var scoreSumAverage2 = scoreSum2 / count
+    scoreSum3 += score3
+    var scoreSumAverage3 = scoreSum3 / count
+    scoreSum4 += score4
+    var scoreSumAverage4 = scoreSum4 / count
+    scoreSum5 += score5
+    var scoreSumAverage5 = scoreSum5 / count
+    averageScoreSum += averageScore
+    var totalScoreSumAverage = averageScoreSum / count
+
+    var appendText2 = `
+    평균 :
+    html평균 : ${scoreSumAverage1} /
+    javascript평균 : ${scoreSumAverage2} /
+    css평균 : ${scoreSumAverage3} /
+    nodejs평균 : ${scoreSumAverage4} /
+    mysql평균 : ${scoreSumAverage5} /
+    전체평균 : ${totalScoreSumAverage}
+    <br>
+    최고점자 이름 : ${maxScoreName} /
+    평균 : ${maxScoreAverage}`;
+
+    $("#inputName").val("");
+    $("#inputHtmlScore").val("");
+    $("#inputJavascriptScore").val("");
+    $("#inputCssScore").val("");
+    $("#inputNodejsScore").val("");
+    $("#inputMysqlScore").val("");
+
+    $('#gradeInfo2').html(appendText2);
+  });
+
+  $("#clearButton").click(function() {
+    count = 0;
+
+    maxScoreName = '';
+    maxScoreAverage = 0;
+
+    scoreSum1 = 0;
+    scoreSum2 = 0;
+    scoreSum3 = 0;
+    scoreSum4 = 0;
+    scoreSum5 = 0;
+    averageScoreSum = 0;
+    $('#gradeInfo1').html("");
+    $('#gradeInfo2').html("");
+  });
+</script>
+
+</html>

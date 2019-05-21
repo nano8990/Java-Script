@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+  <meta charset='utf-8'>
+  <title></title>
+</head>
+<style media='screen'>
+</style>
+
+<body>
+  <br>
+  작성자 : <input type='text' id='inputWriter' placeholder='writer' value=''><br>
+  제목 : <input type='text' id='inputTitle' placeholder='Title' value=''><br>
+  내용 : <input type='text' id='inputText' placeholder='Text' value=''><br>
+  <input type='button' id='insertButtenClicked' value='입력'>
+  <input type='button' id='goToHome' value='조회화면으로'>
+  <br><br>
+  <span id='result'></span>
+</body>
+<script src='http://code.jquery.com/jquery-latest.min.js'></script>
+<script>
+  $('#insertButtenClicked').click(function() {
+    var inputWriter = $('#inputWriter').val();
+    var inputTitle = $('#inputTitle').val();
+    var inputText = $('#inputText').val();
+    if (inputWriter == '') {
+      alert('작성자를 입력하세요.');
+      return;
+    } else if (inputTitle == '') {
+      alert('제목을 입력하세요.');
+      return;
+    } else if (inputText == '') {
+      alert('내용을 입력하세요.');
+      return;
+    }
+
+    $.ajax({
+      url: `/insert`,
+      type: 'POST',
+      data: {
+        writer: inputWriter,
+        title: inputTitle,
+        text: inputText
+      },
+      success: function(response) {
+        location.href = '/form/select'
+      }
+    });
+  });
+  $('#goToHome').click(function() {
+    location.href = '/form/select'
+  });
+
+  var selectNumber = '';
+  var selectWriter = '';
+  var selectTitle = '';
+  var selectText = '';
+  $.ajax({
+    url: `http://localhost/select`,
+    type: 'POST',
+    data: {
+      no: selectNumber,
+      writer: selectWriter,
+      title: selectTitle,
+      text: selectText
+    },
+    success: function(response) {
+      var resultString = `
+      <table width='720px' height='40px' border=1>
+      <tr>
+      <td width='80'>번호</td>
+      <td width='150'>작성자</td>
+      <td width='150'>제목</td>
+      <td>내용</td>
+      </tr>`;
+      for (var i = 0; i < response.length; i++) {
+        var eachNo = response[i].no;
+        var eachWriter = response[i].writer;
+        var eachTitle = response[i].title;
+        var eachText = response[i].text;
+        resultString += '<tr>';
+        resultString += '<td>';
+        resultString += eachNo;
+        resultString += '</td>';
+        resultString += '<td>';
+        resultString += eachWriter;
+        resultString += '</td>';
+        resultString += '<td>';
+        resultString += eachTitle;
+        resultString += '</td>';
+        resultString += '<td>';
+        resultString += eachText;
+        resultString += '</td>';
+        resultString += '</tr>';
+        $('#result').html(resultString);
+      }
+    }
+  });
+</script>
+
+</html>

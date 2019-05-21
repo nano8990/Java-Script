@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<style media="screen">
+  .tab {
+    white-space: pre;
+  }
+</style>
+
+<body>
+  번호 : <input type="text" id="inputNumber" placeholder="No" value=""><br>
+  제목 : <input type="text" id="inputTitle" placeholder="Title" value=""><br>
+  내용 : <input type="text" id="inputText" placeholder="Text" value=""><br>
+  <input type="button" id="selectButtenClicked" value="조회">
+  <span id='buttons'>
+    <input type="button" id="insertButtenClicked" value="입력">
+    <input type="button" id="deleteButtenClicked" value="삭제">
+  </span>
+  <br><br>
+  <span id='result'></span>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+  var result;
+
+  $("#selectButtenClicked").click(
+    function() {
+      var inputSelectNumber = $("#inputNumber").val();
+      var inputSelectTitle = $("#inputTitle").val();
+      var inputSelectText = $("#inputText").val();
+      $.ajax({
+        url: `http://localhost/select`,
+        type: 'POST',
+        data: {
+          no: inputSelectNumber,
+          title: inputSelectTitle,
+          text: inputSelectText
+        },
+        success: function(response) {
+          result = response;
+          var resultString = '<table width="800px" height="40px" border=1><tr><td width="80">선택상자</td><td width="80">번호</td><td width="200">제목</td><td>내용</td></tr>';
+
+          // function loop(x) {
+          //   setTimeout(function() {
+          //     var eachNo = response[x].no;
+          //     var eachTitle = response[x].title;
+          //     var eachText = response[x].text;
+          //     resultString += '<tr>';
+          //     resultString += '<td>';
+          //     resultString += '<input type="checkbox" name="selectBox" value="">'
+          //     resultString += '</td>';
+          //     resultString += '<td>';
+          //     resultString += eachNo;
+          //     resultString += '</td>';
+          //     resultString += '<td>';
+          //     resultString += eachTitle;
+          //     resultString += '</td>';
+          //     resultString += '<td>';
+          //     resultString += eachText;
+          //     resultString += '</td>';
+          //     resultString += '</tr>';
+          //     $("#result").html(resultString);
+          //   }, 100 * x);
+          // }
+          // for (var i = 0; i < response.length; i++) {
+          //   loop(i);
+          // }
+          //
+          for (var i = 0; i < response.length; i++) {
+            var eachNo = response[i].no;
+            var eachTitle = response[i].title;
+            var eachText = response[i].text;
+            resultString += '<tr>';
+            resultString += '<td>';
+            resultString += '<input type="checkbox" name="selectBox" value="">'
+            resultString += '</td>';
+            resultString += '<td>';
+            resultString += eachNo;
+            resultString += '</td>';
+            resultString += '<td>';
+            resultString += eachTitle;
+            resultString += '</td>';
+            resultString += '<td>';
+            resultString += eachText;
+            resultString += '</td>';
+            resultString += '</tr>';
+            $("#result").html(resultString);
+          }
+        }
+      });
+    });
+
+  $("#insertButtenClicked").click(function() {
+    var inputInsertTitle = $("#inputTitle").val();
+    var inputInsertText = $("#inputText").val();
+    $.ajax({
+      url: `/insert`,
+      type: 'POST',
+      data: {
+        title: inputInsertTitle,
+        text: inputInsertText
+      },
+      success: function(response) {
+        $("#result").html(response)
+        $("#inputNumber").val('')
+        $("#inputTitle").val('')
+        $("#inputText").val('')
+        $("#selectButtenClicked").click()
+      }
+    });
+  });
+
+  $("#deleteButtenClicked").click(function() {
+    if (result != undefined) {
+      var selectBox = $("input[name*='selectBox']");
+      var selectList = [];
+      for (var i = 0; i < selectBox.length; i++) {
+        if (selectBox[i].checked) {
+          selectList.push(result[i].no)
+        }
+      }
+
+      if (selectList == '') {
+        if (selectBox.length > 0) {
+          selectList[0] = result[selectBox.length - 1].no;
+        } else {
+          return
+        }
+      }
+
+      $.ajax({
+        url: `/delete`,
+        type: 'POST',
+        data: {
+          no: selectList
+        },
+        success: function(response) {
+          $("#inputNumber").val('')
+          $("#inputTitle").val('')
+          $("#inputText").val('')
+          $("#selectButtenClicked").click()
+        }
+      });
+    } else {
+      $("#selectButtenClicked").click()
+    }
+  });
+</script>
+
+</html>

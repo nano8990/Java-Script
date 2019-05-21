@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <input type="text" id="num1"><br>
+  <input type="text" id="num2"><br>
+  <input type="text" id="num3"><br>
+  <input type="button" value="곱하기" id="multiplyBtn"><br>
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+  $("#multiplyBtn").click(function() {
+    var a = $("#num1").val()
+    var b = $("#num2").val()
+    var c = $("#num3").val()
+    $.ajax({
+      url: `http://localhost/sum?a=${a}&b=${b}&c=${c}`,
+      data: {},
+      success: function(response) {
+        console.log(response);
+      }
+    });
+  });
+</script>
+
+</html>

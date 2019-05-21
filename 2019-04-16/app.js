@@ -3,16 +3,16 @@ var http = require('http');
 var app = express();
 var server = http.createServer(app).listen(80);
 
-app.get(`/`, function(req, res) {
-  res.sendfile("files/js.html");
+app.get(`/array`, function(req, res) {
+  res.sendfile("files/array_practice.html");
 })
 
-app.get(`/0`, function(req, res) {
-  res.sendfile("files/js0.html");
+app.get(`/dictionary`, function(req, res) {
+  res.sendfile("files/dictionary_practice.html");
 })
 
-app.get(`/1`, function(req, res) {
-  res.sendfile("files/js1.html");
+app.get(`/weightweight`, function(req, res) {
+  res.sendfile("files/weight.html");
 })
 
 console.log("running")

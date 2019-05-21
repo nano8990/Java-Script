@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+  <meta charset='utf-8'>
+  <title></title>
+</head>
+<style media='screen'>
+</style>
+
+<body>
+  번호 : <input type='text' id='inputNumber' placeholder='No' value=''><br>
+  작성자 : <input type='text' id='inputWriter' placeholder='writer' value=''><br>
+  제목 : <input type='text' id='inputTitle' placeholder='Title' value=''><br>
+  내용 : <input type='text' id='inputText' placeholder='Text' value=''><br>
+  <input type='button' id='selectButtenClicked' value='조회'>
+  <input type='button' id='goToInsert' value='입력화면으로'>
+  <input type='button' id='goToUpdate' value='수정화면으로'>
+  <input type='button' id='goToDelete' value='삭제화면으로'>
+  <br><br>
+  <span id='result'></span>
+</body>
+<script src='http://code.jquery.com/jquery-latest.min.js'></script>
+<script>
+  var result;
+
+  $('#selectButtenClicked').click(
+    function() {
+      var inputSelectNumber = $('#inputNumber').val();
+      var inputSelectWriter = $('#inputWriter').val();
+      var inputSelectTitle = $('#inputTitle').val();
+      var inputSelectText = $('#inputText').val();
+      $.ajax({
+        url: `http://localhost/select`,
+        type: 'POST',
+        data: {
+          no: inputSelectNumber,
+          writer: inputSelectWriter,
+          title: inputSelectTitle,
+          text: inputSelectText
+        },
+        success: function(response) {
+          result = response;
+          var resultString = `
+          <table width='720px' height='40px' border=1>
+          <tr>
+          <td width='80'>번호</td>
+          <td width='150'>작성자</td>
+          <td width='150'>제목</td>
+          <td>내용</td>
+          </tr>`;
+          if (response.length > 0) {
+            for (var i = 0; i < response.length; i++) {
+              var eachNo = response[i].no;
+              var eachWriter = response[i].writer;
+              var eachTitle = response[i].title;
+              var eachText = response[i].text;
+              resultString += '<tr>';
+              resultString += '<td>';
+              resultString += eachNo;
+              resultString += '</td>';
+              resultString += '<td>';
+              resultString += eachWriter;
+              resultString += '</td>';
+              resultString += '<td>';
+              resultString += eachTitle;
+              resultString += '</td>';
+              resultString += '<td>';
+              resultString += eachText;
+              resultString += '</td>';
+              resultString += '</tr>';
+              $('#result').html(resultString);
+            }
+          } else {
+            $('#result').html('');
+          }
+        }
+      });
+    });
+  $('#selectButtenClicked').click();
+
+  $('#goToInsert').click(function() {
+    location.href = '/form/insert'
+  });
+
+  $('#goToUpdate').click(function() {
+    location.href = '/form/update'
+  });
+
+  $('#goToDelete').click(function() {
+    location.href = '/form/delete'
+  });
+</script>
+
+</html>

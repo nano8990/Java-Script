@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  <input type="text" name="maxFind" placeholder="숫자 입력">
+  <input type="text" name="maxFind" placeholder="숫자 입력">
+  <input type="text" name="maxFind" placeholder="숫자 입력">
+  <br>
+  <span id="resultSpan"></span>
+  <br>
+  <input type="button" id="button1" value="return값으로">
+  <input type="button" id="button2" value="실행부에서">
+</body>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+<script>
+  $("#button1").click(function() {
+    var valueLength = $("[name=maxFind]").length
+    var value = [];
+    for (var i = 0; i < valueLength; i++) {
+      value[i] = Number($("[name=maxFind]")[i].value);
+    }
+    $("#resultSpan").html(maxFind(value));
+  });
+
+  function maxFind(array) {
+    var maxValue = array[0];
+    for (var i = 0; i < array.length - 1; i++) {
+      maxValue = tempMaxFind(maxValue, array[i + 1]);
+    }
+    return maxValue;
+
+    function tempMaxFind(number1, number2) {
+      var result;
+      (number1 >= number2) ? (result = number1) : (result = number2);
+      return Number(result);
+    }
+  }
+
+
+  $("#button2").click(function() {
+    var valueLength = $("[name=maxFind]").length
+    var value = [];
+    for (var i = 0; i < valueLength; i++) {
+      value[i] = Number($("[name=maxFind]")[i].value);
+    }
+    $("#resultSpan").html(Math.max.apply(null, value));
+  });
+</script>
+
+</html>

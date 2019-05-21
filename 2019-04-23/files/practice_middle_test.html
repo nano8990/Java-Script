@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  숫자1 <input type="text" id="num1"><br>
+  숫자2 <input type="text" id="num2"><br>
+  <input type="button" value="계산" id="calcBtn">
+  <br>
+  <span id="resultArea"></span>
+  <br>
+  횟수 : <span id="countArea">0</span>
+</body>
+<script type="text/javascript">
+var cnt = 0;
+  document.getElementById('calcBtn').addEventListener('click', function(){
+    var num1 = Number(document.getElementById('num1').value);
+    var num2 = Number(document.getElementById('num2').value);
+
+    document.getElementById('resultArea').innerHTML += `${num1} x ${num2} = ${num1*num2}<br>`;
+
+    cnt++;
+    document.getElementById('countArea').innerHTML = cnt;
+  });
+</script>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+
+<body>
+  이름 : <input type="text" id="inputName"><br>
+  html : <input type="text" id="inputHtmlScore"><br>
+  javascript : <input type="text" id="inputJavascriptScore"><br>
+  css : <input type="text" id="inputCssScore"><br>
+  nodejs : <input type="text" id="inputNodejsScore"><br>
+  mysql : <input type="text" id="inputMysqlScore"><br>
+  <input type="button" value="성적입력" id="inputScoreButton">
+  <input type="button" value="초기화" id="clearButton">
+  <br>
+  <span id="gradeInfo1"></span>
+  <br>
+  <span id="gradeInfo2"></span>
+  <script type="text/javascript">
+    var maxScoreName = "";
+    var maxScoreAverage = 0;
+
+    var htmlComprehensiveSum = 0;
+    var javascriptComprehensiveSum = 0;
+    var cssComprehensiveSum = 0;
+    var nodejsComprehensiveSum = 0;
+    var mysqlComprehensiveSum = 0;
+    var totalComprehensiveSum = 0;
+
+    var buttonClickCount = 0;
+
+    document.getElementById('inputScoreButton').addEventListener('click', function() {
+      var name = document.getElementById('inputName').value;
+      var htmlScore = Number(document.getElementById('inputHtmlScore').value);
+      var javascriptScore = Number(document.getElementById('inputJavascriptScore').value);
+      var cssScore = Number(document.getElementById('inputCssScore').value);
+      var nodejsScore = Number(document.getElementById('inputNodejsScore').value);
+      var mysqlScore = Number(document.getElementById('inputMysqlScore').value);
+      var totalScore = htmlScore + javascriptScore + cssScore + nodejsScore + mysqlScore;
+      var totalAverage = totalScore / 5;
+      buttonClickCount++;
+
+      document.getElementById('gradeInfo1').innerHTML +=
+        `이름 : ${name} /
+    html : ${htmlScore} /
+    javascript : ${javascriptScore} /
+    css : ${cssScore} /
+    nodejs : ${nodejsScore} /
+    mysql : ${mysqlScore} /
+    ${name}평균 : ${totalAverage}<br>`;
+      if (totalAverage > maxScoreAverage) {
+        maxScoreName = name;
+        maxScoreAverage = totalAverage;
+      }
+
+      htmlComprehensiveSum += htmlScore;
+      javascriptComprehensiveSum += javascriptScore;
+      cssComprehensiveSum += cssScore;
+      nodejsComprehensiveSum += nodejsScore;
+      mysqlComprehensiveSum += mysqlScore;
+      totalComprehensiveSum += totalAverage;
+
+      var htmlComprehensiveAverage = htmlComprehensiveSum / buttonClickCount;
+      var javascriptComprehensiveAverage = javascriptComprehensiveSum / buttonClickCount;
+      var cssComprehensiveAverage = cssComprehensiveSum / buttonClickCount;
+      var nodejsComprehensiveAverage = nodejsComprehensiveSum / buttonClickCount;
+      var mysqlComprehensiveAverage = mysqlComprehensiveSum / buttonClickCount;
+      var totalComprehensiveAverage = totalComprehensiveSum / buttonClickCount;
+
+      document.getElementById('gradeInfo2').innerHTML =
+        `평균 :
+    html평균 : ${htmlComprehensiveAverage} /
+    javascript평균 : ${javascriptComprehensiveAverage} /
+    css평균 : ${cssComprehensiveAverage} /
+    nodejs평균 : ${nodejsComprehensiveAverage} /
+    mysql평균 : ${mysqlComprehensiveAverage} /
+    전체평균 : ${totalComprehensiveAverage}
+    <br>
+    최고점자 이름 : ${maxScoreName} /
+    평균 : ${maxScoreAverage}`;
+
+    document.getElementById('inputName').value = "";
+    document.getElementById('inputHtmlScore').value = "";
+    document.getElementById('inputJavascriptScore').value = "";
+    document.getElementById('inputCssScore').value = "";
+    document.getElementById('inputNodejsScore').value = "";
+    document.getElementById('inputMysqlScore').value = "";
+
+    });
+    document.getElementById('clearButton').addEventListener('click', function() {
+      maxScoreName = "";
+      maxScoreAverage = 0;
+
+      htmlComprehensiveSum = 0;
+      javascriptComprehensiveSum = 0;
+      cssComprehensiveSum = 0;
+      nodejsComprehensiveSum = 0;
+      mysqlComprehensiveSum = 0;
+      totalComprehensiveSum = 0;
+
+      buttonClickCount = 0;
+      document.getElementById('gradeInfo1').innerHTML = "";
+      document.getElementById('gradeInfo2').innerHTML = "";
+    });
+  </script>
+
+</html>

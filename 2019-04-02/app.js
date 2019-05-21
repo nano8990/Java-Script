@@ -3,20 +3,20 @@ var http = require('http');
 var app = express();
 var server = http.createServer(app).listen(80);
 
-app.get(`/`, function(req, res) {
-  res.sendfile("files/js.html");
+app.get(`/login`, function(req, res) {
+  res.sendfile("files/login.html");
 })
 
-app.get(`/0/`, function(req, res) {
-  res.sendfile("files/js0.html");
+app.get(`/innerhtml/`, function(req, res) {
+  res.sendfile("files/innerHTML.html");
 })
 
-app.get(`/00/`, function(req, res) {
-  res.sendfile("files/js00.html");
+app.get(`/gugudan/`, function(req, res) {
+  res.sendfile("files/gugudan.html");
 })
 
-app.get(`/000/`, function(req, res) {
-  res.sendfile("files/js000.html");
+app.get(`/innerhtml2/`, function(req, res) {
+  res.sendfile("files/innerHTML2.html");
 })
 
 console.log("running")
