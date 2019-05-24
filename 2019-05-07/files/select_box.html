@@ -31,13 +31,13 @@
     var carKinds = $("#carKinds").val();
     var carColor = $("#carColor").val();
     $.ajax({
-      url: `http://localhost/carbuy`,
+      url: `http://localhost:8027/carbuy`,
       data: {
         kinds: carKinds,
         color: carColor
       },
       success: function(response) {
-        $("#result").html(response)
+        location.href = "http://localhost:8027/123123"
       }
     });
   });
