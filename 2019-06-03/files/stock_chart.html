@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+  <meta charset='utf-8'>
+  <title></title>
+</head>
+<style media='screen'>
+  .header {
+    text-align: center;
+  }
+</style>
+
+<body>
+  <input type="button" id="stockButton" value="주식정보 얻기">
+  <input type="button" id="stopButton" value="이제 그만">
+  <input type="button" id="selectButton" value="그래프">
+  <br><br>
+  <div id="chart_div"></div>
+  <span id="stockResult"></span>
+</body>
+<script src='http://code.jquery.com/jquery-latest.min.js'></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  var myTimer;
+  var isTimerStarted = false;
+  var resultRows;
+  $('#stockButton').click(function() {
+    if (isTimerStarted) {
+      return;
+    }
+    isTimerStarted = true;
+    // myTimer = setInterval(function() {
+    $.ajax({
+      url: `/get_stock2`
+    });
+    // }, 5000);
+  });
+
+  $('#stopButton').click(function() {
+    if (isTimerStarted == false) {
+      return;
+    }
+    isTimerStarted = false;
+    clearInterval(myTimer);
+  });
+
+  $('#selectButton').click(function() {
+    resultRows = [];
+    $.ajax({
+      url: `/get_stock3`,
+      success: function(response) {
+        for (var i = 0; i < response.length; i++) {
+          var eachTime = response[i].time;
+          var date = eachTime.split("T")[0].split("-");
+          var time = eachTime.split("T")[1].split(":");
+          time[2] = time[2].replace(".000Z", "");
+
+          var price = response[i].price;
+          var date2 = new Date(date[0], date[1], date[2], Number(time[0]) + 9, time[1], time[2])
+          resultRows.push([date2, price]);
+        }
+        console.log(resultRows);
+        google.charts.load('current', {
+          packages: ['corechart', 'line']
+        });
+        google.charts.setOnLoadCallback(drawLineColors);
+      }
+    });
+  });
+
+  function drawLineColors() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('datetime', 'Time');
+    data.addColumn('number', 'Price');
+
+    data.addRows(resultRows);
+
+    var options = {
+
+      hAxis: {
+        title: 'Time'
+      },
+      vAxis: {
+        title: 'Stock'
+      },
+      series: {
+        1: {
+          curveType: 'function'
+        }
+      }
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+</script>
+
+</html>

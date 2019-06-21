@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+  <meta charset='utf-8'>
+  <title></title>
+</head>
+<style media='screen'>
+  .header {
+    text-align: center;
+  }
+</style>
+
+<body>
+  <select name="" id="itemList">
+    <option value="skt">SK텔레콤</option>
+    <option value="kt">KT</option>
+    <option value="lg">LG</option>
+    <option value="hyundai">현대차</option>
+    <option value="kia">기아차</option>
+  </select>
+  <input type="button" id="startButton" value="시작">
+  <span id="timeSpan"></span>
+  <br><br>
+  <span id="titleSpan"></span>
+  <div id="chart_div"></div>
+</body>
+<script src='http://code.jquery.com/jquery-latest.min.js'></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+  var TIME_INTERVAL = 1000;
+  var MAX_LENGTH = 10;
+
+  var itemList = {
+    skt: 'SK텔레콤',
+    kt: 'KT',
+    lg: 'LG',
+    hyundai: '현대차',
+    kia: '기아차'
+  }
+
+  var timeCount = 0;
+  var countTimer = setInterval(function() {
+    timeCount++;
+    $("#timeSpan").html(`경과시간 : ${timeCount}초`)
+  }, TIME_INTERVAL);
+
+  var graphTimer;
+  var isStarted = false;
+  var chartList = [];
+
+  $('#startButton').click(function() {
+
+    if (isStarted == true) {
+      clearInterval(graphTimer);
+      chartList = [];
+    }
+
+    isStarted = true;
+
+    var selectedItem = $("#itemList").val();
+
+    $("#titleSpan").html(itemList[selectedItem]);
+
+    graphTimer = setInterval(function() {
+      $.ajax({
+        url: `/get_stock`,
+        type: 'get',
+        data: {
+          item: selectedItem
+        },
+        success: function(response) {
+          var xTime;
+          if (chartList.length == 0) {
+            xTime = timeCount;
+          } else if (chartList[chartList.length - 1][0] + 1 == timeCount) {
+            xTime = timeCount;
+          } else {
+            xTime = chartList[chartList.length - 1][0] + 1;
+          }
+          pushData(xTime, Number(response));
+          google.charts.load('current', {
+            packages: ['corechart', 'line']
+          });
+          google.charts.setOnLoadCallback(drawLineColors);
+        }
+      });
+    }, TIME_INTERVAL);
+  });
+
+  function pushData(time, price) {
+    if (chartList.length < MAX_LENGTH) {
+      chartList.push([time, price])
+    } else {
+      chartList.splice(0, 1);
+      chartList.push([time, price])
+    }
+  }
+
+  function drawLineColors() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('number', 'Time');
+    data.addColumn('number', 'Price');
+
+    data.addRows(chartList);
+
+    var options = {
+
+      hAxis: {
+        title: 'Time',
+        format: '0'
+      },
+      vAxis: {
+        title: 'Price'
+      },
+      series: {
+        1: {
+          curveType: 'function'
+        }
+      }
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data, options);
+  }
+</script>
+
+</html>

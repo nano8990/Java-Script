@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+  <meta charset='utf-8'>
+  <title></title>
+</head>
+<style media='screen'>
+</style>
+
+<body>
+  편명 / 항공코드 / 출발지 / 목적지 / 출발시각 / 도착시각
+  <br><br>
+  편명 : <input type="text" id="inputFlightName"><br>
+  항공코드 : <input type="text" id="inputAircraftCode"><br>
+  출발지 : <input type="text" id="inputDeparture"><br>
+  도착지 : <input type="text" id="inputArrival"><br>
+  출발시각 : <input type="text" id="inputDepartureTime"><br>
+  도착시각 : <input type="text" id="inputArrivalTime"><br>
+  <input type="button" id="inputButton" value="입력">
+  <input type="button" id="cancelButton" value="취소">
+  <br><br>
+  <input type="button" id="deleteButton" value="삭제">
+  <input type='button' id='allClickButton' value='전체선택'>
+  <input type='button' id='allUnclickButton' value='전체해제'>
+  <br><br>
+  <span id="spanResult"></span>
+</body>
+<script src='http://code.jquery.com/jquery-latest.min.js'></script>
+<script>
+  var selectResult;
+  $('#inputButton').click(function() {
+    var exp = /[^0-9a-zA-Zㄱ-ㅎㅏ-ㅣ가-힣]/;
+    var exp2 = /[^:]/;
+    var exp3 = /[^-]/;
+    var inputFlightName = $("#inputFlightName").val();
+    if (inputFlightName == '') {
+      alert("편명을 입력해주세요.");
+      return;
+    }
+    if (exp.test(inputFlightName)) {
+      alert("편명에 특수문자가 들어감");
+      return;
+    }
+    var inputAircraftCode = $("#inputAircraftCode").val();
+    if (inputAircraftCode == '') {
+      alert("항공코드를 입력해주세요.");
+      return;
+    }
+    if (exp.test(inputAircraftCode)) {
+      alert("항공코드에 특수문자가 들어감");
+      return;
+    }
+    var inputDeparture = $("#inputDeparture").val();
+    if (inputDeparture == '') {
+      alert("출발지를 입력해주세요.");
+      return;
+    }
+    if (exp.test(inputDeparture)) {
+      alert("출발지에 특수문자가 들어감");
+      return;
+    }
+    var inputArrival = $("#inputArrival").val();
+    if (inputArrival == '') {
+      alert("도착지를 입력해주세요.");
+      return;
+    }
+    if (exp.test(inputArrival)) {
+      alert("도착지에 특수문자가 들어감");
+      return;
+    }
+    var inputDepartureTime = $("#inputDepartureTime").val();
+    if (inputDepartureTime == '') {
+      alert("출발시각을 입력해주세요.");
+      return;
+    }
+    if (exp.test(inputDepartureTime)) {
+      if (exp2.test(inputDepartureTime)) {
+        if (exp3.test(inputDepartureTime)) {
+          alert("출발시각에 특수문자가 들어감");
+          return;
+        }
+      }
+    }
+    var inputArrivalTime = $("#inputArrivalTime").val();
+    if (inputArrivalTime == '') {
+      alert("도착시각을 입력해주세요.");
+      return;
+    }
+    if (exp.test(inputArrivalTime)) {
+      if (exp2.test(inputArrivalTime)) {
+        if (exp3.test(inputArrivalTime)) {
+          alert("도착시각에 특수문자가 들어감");
+          return;
+        }
+      }
+    }
+
+    $.ajax({
+      url: `/flight_send`,
+      type: 'POST',
+      data: {
+        flightName: inputFlightName,
+        aircraftCode: inputAircraftCode,
+        departure: inputDeparture,
+        arrival: inputArrival,
+        departureTime: inputDepartureTime,
+        arrivalTime: inputArrivalTime
+      },
+      success: function(response) {
+        if (response == "EMPTY_VALUE") {
+          alert("누락된 값이 발견됨");
+        } else if (response == "PRIMARY_ERROR") {
+          alert("편명이 중복되었습니다.");
+        } else {
+          selectData();
+        }
+      }
+    });
+  });
+
+  $('#deleteButton').click(function() {
+    var deleteCheck = $(`input[name*='deleteCheck']`);
+    var deleteList = [];
+    for (var i = 0; i < deleteCheck.length; i++) {
+      if (deleteCheck[i].checked) {
+        deleteList.push(selectResult[i])
+      }
+    }
+    if (deleteList.length == 0) {
+      alert('삭제할 데이터를 선택해주세요.');
+      return
+    }
+    $.ajax({
+      url: `/delete_flight`,
+      type: 'POST',
+      data: {
+        tableName: "flight",
+        deleteList: deleteList
+      },
+      success: function(response) {
+        selectData();
+      }
+    });
+  });
+
+  $('#allClickButton').click(function() {
+    var deleteCheck = $(`input[name*='deleteCheck']`);
+    for (var i = 0; i < deleteCheck.length; i++) {
+      if (deleteCheck[i].checked == false) {
+        $(`input[name*='deleteCheck']`)[i].checked = true;
+      }
+    }
+  });
+  $('#allUnclickButton').click(function() {
+    var deleteCheck = $(`input[name*='deleteCheck']`);
+    for (var i = 0; i < deleteCheck.length; i++) {
+      if (deleteCheck[i].checked == true) {
+        $(`input[name*='deleteCheck']`)[i].checked = false;
+      }
+    }
+  });
+
+  $('#cancelButton').click(function() {
+    location.href = "/";
+  });
+
+  function selectData() {
+    $("#spanResult").html('');
+    selectResult = [];
+    $.ajax({
+      url: `/select_flight`,
+      type: 'POST',
+      data: {
+        tableName: "flight"
+      },
+      success: function(response) {
+        var resultString = "";
+        for (var i = 0; i < response.length; i++) {
+          resultString += "<input type='checkbox' name='deleteCheck'> ";
+          resultString += response[i].flightName;
+          selectResult.push(response[i].flightName)
+          resultString += " / ";
+          resultString += response[i].aircraftCode;
+          resultString += " / ";
+          resultString += response[i].departure;
+          resultString += " / ";
+          resultString += response[i].arrival;
+          resultString += " / ";
+          resultString += response[i].departureTime;
+          resultString += " / ";
+          resultString += response[i].arrivalTime;
+          resultString += "<br>";
+        }
+        $("#spanResult").html(resultString);
+      }
+    });
+  }
+  selectData();
+</script>
+
+</html>

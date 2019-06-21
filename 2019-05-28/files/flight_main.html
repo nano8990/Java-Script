@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+  <meta charset='utf-8'>
+  <title></title>
+</head>
+<style media='screen'>
+</style>
+
+<body>
+  편명 / 항공기명 / 좌석수 / 출발지 / 목적지 / 출발시각 / 도착시각
+  <br><br>
+  <input type="button" id="goToFlight" value="항공편입력">
+  <input type="button" id="goToAircraft" value="항공기입력">
+  <br><br>
+  <span id="spanResult"></span>
+</body>
+<script src='http://code.jquery.com/jquery-latest.min.js'></script>
+<script>
+  $('#goToFlight').click(function() {
+    location.href = "/input_flight"
+  });
+  $('#goToAircraft').click(function() {
+    location.href = "/input_aircraft"
+  });
+  function selectData() {
+    $("#spanResult").html('');
+    $.ajax({
+      url: `http://localhost/join_flight`,
+      type: 'POST',
+      data: {
+        tableName1: "flight",
+        tableName2: "aircraft"
+      },
+      success: function(response) {
+        var resultString = "";
+        for (var i = 0; i < response.length; i++) {
+          resultString += response[i].flightName;
+          resultString += " / ";
+          resultString += response[i].aircraftName;
+          resultString += " / ";
+          resultString += response[i].seats;
+          resultString += " / ";
+          resultString += response[i].departure;
+          resultString += " / ";
+          resultString += response[i].arrival;
+          resultString += " / ";
+          resultString += response[i].departureTime;
+          resultString += " / ";
+          resultString += response[i].arrivalTime;
+          resultString += "<br>";
+        }
+        $("#spanResult").html(resultString);
+      }
+    });
+  }
+  selectData()
+</script>
+
+</html>

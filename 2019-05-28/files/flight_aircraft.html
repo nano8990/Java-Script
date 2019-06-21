@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+  <meta charset='utf-8'>
+  <title></title>
+</head>
+<style media='screen'>
+  .box-left {
+    position: absolute;
+    height: 100px;
+    width: 80px;
+    background-color: #e74c3c;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 50px;
+    margin: auto;
+    cursor: pointer;
+    border-top-left-radius: 13px;
+    border-bottom-left-radius: 13px;
+  }
+
+  .fa-times {
+    font-size: 70px !important;
+    margin: 23px;
+    color: #fff;
+  }
+
+  .box-right {
+    position: absolute;
+    height: 100px;
+    width: 20px;
+    background-color: #e74c3c;
+    top: 0;
+    bottom: 0;
+    left: 50px;
+    right: 0;
+    margin: auto;
+    transition: 0.5s;
+    cursor: pointer;
+    border-top-right-radius: 13px;
+    border-bottom-right-radius: 13px;
+  }
+
+  .fa-check {
+    font-size: 70px !important;
+    margin-left: 7px;
+    margin-top: 13px;
+  }
+
+  .bar {
+    height: 80px;
+    width: 0px;
+    background-color: lightgray;
+    position: absolute;
+    top: 10px;
+    bottom: 0;
+    left: 80px;
+    right: 0;
+    transition: 0.5s;
+    overflow: hidden;
+  }
+
+  .cl-bar2 {
+    width: 80px;
+  }
+
+  .cl-box2 {
+    left: 210px;
+  }
+</style>
+
+<body>
+  항공코드 / 항공기명 / 좌석수
+  <br><br>
+  항공코드 : <input type="text" id="inputAircraftCode"><br>
+  항공기명 : <input type="text" id="inputAircraftName"><br>
+  좌석수 : <input type="text" id="inputSeats"><br>
+  <input type="button" id="inputButton" value="입력">
+  <input type="button" id="cancelButton" value="취소">
+  <br><br>
+  <div type='button' name='delete' class='box'>
+    <div class='box-left'>
+      <i class='but-icon fa fa-lg fa-times'></i>
+
+      <div class='bar'>
+        <i class='but-icon fa fa-lg fa-check'></i>
+      </div>
+    </div>
+    <div class='box-right'></div>
+  </div>
+  <input type="button" id="deleteButton" value="삭제">
+  <input type='button' id='allClickButton' value='전체선택'>
+  <input type='button' id='allUnclickButton' value='전체해제'>
+  <br><br>
+  <span id="spanResult"></span>
+  <span id="spanResult2"></span>
+</body>
+<script src='http://code.jquery.com/jquery-latest.min.js'></script>
+<script>
+  var selectResult;
+
+  $(document).ready(function() {
+
+    $(".box").hover(function() {
+      $(".box-right").toggleClass('cl-box2');
+      $(".bar").toggleClass('cl-bar2');
+    });
+
+    $(".bar").click(function() {
+      deleteButtonClicked();
+    });
+  });
+
+  $('#inputButton').click(function() {
+    var inputAircraftCode = $("#inputAircraftCode").val();
+    if (inputAircraftCode == '') {
+      alert("항공코드를 입력해주세요.");
+      return;
+    }
+    var inputAircraftName = $("#inputAircraftName").val();
+    if (inputAircraftName == '') {
+      alert("항공기명을 입력해주세요.");
+      return;
+    }
+    var inputSeats = $("#inputSeats").val();
+    if (inputSeats == '') {
+      alert("좌석수를 입력해주세요.");
+      return;
+    }
+
+    $.ajax({
+      url: `http://localhost/aircraft_send`,
+      type: 'POST',
+      data: {
+        aircraftCode: inputAircraftCode,
+        aircraftName: inputAircraftName,
+        seats: inputSeats
+      },
+      success: function(response) {
+        if (response == "EMPTY_VALUE") {
+          alert("누락된 값이 발견됨");
+        } else if (response == "PRIMARY_ERROR") {
+          alert("항공코드가 중복되었습니다.");
+        } else {
+          selectData();
+        }
+      }
+    });
+  });
+
+  function deleteButtonClicked() {
+    var deleteCheck = $(`input[name*='deleteCheck']`);
+    var deleteList = [];
+    for (var i = 0; i < deleteCheck.length; i++) {
+      if (deleteCheck[i].checked) {
+        deleteList.push(selectResult[i])
+      }
+    }
+    if (deleteList.length == 0) {
+      alert('삭제할 데이터를 선택해주세요.');
+      return
+    }
+    $.ajax({
+      url: `/delete_flight`,
+      type: 'POST',
+      data: {
+        tableName: "aircraft",
+        deleteList: deleteList
+      },
+      success: function(response) {
+        selectData();
+      }
+    });
+  }
+
+  $('#allClickButton').click(function() {
+    var deleteCheck = $(`input[name*='deleteCheck']`);
+    for (var i = 0; i < deleteCheck.length; i++) {
+      if (deleteCheck[i].checked == false) {
+        $(`input[name*='deleteCheck']`)[i].checked = true;
+      }
+    }
+  });
+  $('#allUnclickButton').click(function() {
+    var deleteCheck = $(`input[name*='deleteCheck']`);
+    for (var i = 0; i < deleteCheck.length; i++) {
+      if (deleteCheck[i].checked == true) {
+        $(`input[name*='deleteCheck']`)[i].checked = false;
+      }
+    }
+  });
+
+  $('#cancelButton').click(function() {
+    location.href = "/"
+  });
+
+  function selectData() {
+    $("#spanResult").html('');
+    selectResult = [];
+    $.ajax({
+      url: `http://localhost/select_flight`,
+      type: 'POST',
+      data: {
+        tableName: "aircraft"
+      },
+      success: function(response) {
+        var resultString = "";
+        for (var i = 0; i < response.length; i++) {
+          resultString += "<input type='checkbox' name='deleteCheck'> ";
+          resultString += response[i].aircraftCode;
+          selectResult.push(response[i].aircraftCode)
+          resultString += " / ";
+          resultString += response[i].aircraftName;
+          resultString += " / ";
+          resultString += response[i].seats;
+          resultString += "<br>";
+        }
+        $("#spanResult").html(resultString);
+      }
+    });
+  }
+  selectData()
+</script>
+
+</html>

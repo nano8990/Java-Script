@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+  <meta charset='utf-8'>
+  <title></title>
+</head>
+<style media='screen'>
+  .header {
+    text-align: center;
+  }
+</style>
+
+<body>
+  <input type="button" id="stockButton" value="주식정보 얻기">
+  <input type="button" id="stopButton" value="이제 그만">
+  <br><br>
+  <div id="chart_div"></div>
+  <span id="stockResult"></span>
+</body>
+<script src='http://code.jquery.com/jquery-latest.min.js'></script>
+<script>
+  var myTimer;
+  var isTimerStarted = false;
+  $('#stockButton').click(function() {
+    if (isTimerStarted) {
+      return;
+    }
+    isTimerStarted = true;
+    myTimer = setInterval(function() {
+      $.ajax({
+        url: `/get_stock2`,
+        type: 'get',
+        data: {},
+        success: function(response) {
+          drawTable(response)
+        }
+      });
+    }, 5000);
+  });
+
+  $('#stopButton').click(function() {
+    if (isTimerStarted == false) {
+      return;
+    }
+    isTimerStarted = false;
+    clearInterval(myTimer);
+  });
+
+  function drawTable(stock) {
+    var resultString = `
+  <table border="5">
+  <tr class='header'>
+  <td>시간</td>
+  <td>삼성전자</td>
+  <td>현대중공업지주</td>
+  </tr>
+  `;
+    for (var i = 0; i < stock.length; i++) {
+      var time = stock[i].time.replace("T", " ").replace(".000Z", "");
+      var samsung = stock[i].samsung;
+      var hyundai = stock[i].hyundai;
+      resultString += `
+    <tr>
+    <td>${time}</td>
+    <td>${samsung}</td>
+    <td>${hyundai}</td>
+    </tr>
+    `;
+    }
+    resultString += "</table>";
+    $(stockResult).html(resultString)
+  }
+</script>
+
+</html>

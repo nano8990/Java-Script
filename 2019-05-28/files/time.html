@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang='en' dir='ltr'>
+
+<head>
+  <meta charset='utf-8'>
+  <title></title>
+</head>
+<style media='screen'>
+</style>
+
+<body>
+  <input type="text" id="inputValue">
+  <input type="button" onclick="multipleIncrement()" value="배수증가">
+  <input type="button" onclick="timerStart()" value="타이머시작">
+  <input type="button" onclick="timerEnd()" value="타이머종료">
+  <input type="button" onclick="location.href = a" value="네이버로">
+  <span id="spanTimer"></span>
+  <br>
+  <span id="spanMultiple"></span>
+</body>
+<script src='http://code.jquery.com/jquery-latest.min.js'></script>
+<script>
+  var a = "https://www.naver.com/";
+
+  var isMultipleStarted = false;
+
+  function multipleIncrement() {
+    if (isMultipleStarted) {
+      return;
+    }
+    isMultipleStarted = true;
+    var inputValue = Number($("#inputValue").val());
+    setTimeout(function() {
+      var count = 1;
+      var timer = setInterval(function() {
+        $("#spanMultiple").append((inputValue * count) + "<br>");
+        count++;
+      }, 1000);
+    }, 3000);
+  }
+
+  var myTimer;
+  var isTimerStarted = false;
+
+  function timerStart() {
+    if (isTimerStarted) {
+      return;
+    }
+    isTimerStarted = true;
+    setTimeout(function() {
+      var count = 0
+      myTimer = setInterval(function() {
+        $("#spanTimer").html(count + "초");
+        count++;
+      }, 1000);
+    }, 3000);
+
+  }
+
+  function timerEnd() {
+    if (isTimerStarted == false) {
+      return;
+    }
+    isTimerStarted = false;
+    setTimeout(function() {
+      clearInterval(myTimer);
+    }, 3000);
+  };
+</script>
+
+</html>
